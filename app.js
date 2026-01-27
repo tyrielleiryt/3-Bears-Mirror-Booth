@@ -82,6 +82,11 @@ function capturePhoto() {
   const imageData = canvas.toDataURL("image/jpeg", 0.85);
   photoPreview.src = imageData;
 
+
+  // ✅ RESET CONFIRM BUTTON HERE (CRITICAL)
+  confirmBtn.disabled = false;
+  confirmBtn.textContent = "Looks Good";
+
 preview.classList.remove("hidden");
 video.style.display = "none";
 }
