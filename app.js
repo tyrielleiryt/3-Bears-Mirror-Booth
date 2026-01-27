@@ -1,6 +1,6 @@
 // Firebase init
 const firebaseConfig = {
-  apiKey: "AIzaSyBmpn8Q_cPQ-h5Bn4IVVZzehYAplVySklE",
+  apiKey: "AIzaSyCQRnrziHFvR6nNxRtZhh4QZU8td5i7Zg8",
   authDomain: "bears-mirror-booth1.firebaseapp.com",
   projectId: "bears-mirror-booth1",
   storageBucket: "bears-mirror-booth1.appspot.com",
