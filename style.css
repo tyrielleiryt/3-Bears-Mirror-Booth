@@ -77,3 +77,31 @@ video {
 .hidden {
   display: none !important;
 }
+
+#qrOverlay {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.qr-box {
+  background: #111;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+}
+
+.qr-box h2 {
+  margin-bottom: 1rem;
+}
+
+.qr-box img {
+  width: 220px;
+  height: 220px;
+  margin: 1rem auto;
+}

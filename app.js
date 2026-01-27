@@ -120,7 +120,12 @@ video.style.display = "block";
 captureBtn.disabled = false;
 
     // NEXT: QR & Share screen (MODULE 4)
-  } catch (err) {
+    // === MODULE 4: QR SCREEN ===
+showQR(url);
+  } 
+  
+  
+  catch (err) {
     alert("Upload failed. Please try again.");
     console.error(err);
   }
@@ -153,4 +158,34 @@ async function uploadPhoto(dataUrl) {
 
   // 3️⃣ Return immediately
   return downloadURL;
+}
+
+const qrOverlay = document.createElement("div");
+qrOverlay.id = "qrOverlay";
+qrOverlay.className = "hidden";
+qrOverlay.innerHTML = `
+  <div class="qr-box">
+    <h2>Scan to get your photo 📸</h2>
+    <div id="qrCode"></div>
+    <p>3 Bears Cafe</p>
+  </div>
+`;
+document.body.appendChild(qrOverlay);
+
+function showQR(photoUrl) {
+  const shareUrl =
+    "https://tyrielleiryt.github.io/3-Bears-Mirror-Booth/photo.html?img=" +
+    encodeURIComponent(photoUrl);
+    
+  document.getElementById("qrCode").innerHTML = "";
+  new QRCode(document.getElementById("qrCode"), shareUrl);
+preview.classList.add("hidden");
+  video.style.display = "none"; // 🔑 hide camera
+  qrOverlay.classList.remove("hidden");
+
+  setTimeout(() => {
+    qrOverlay.classList.add("hidden");
+    video.style.display = "block"; // 🔑 restore camera
+  }, 30000);
+  
 }
