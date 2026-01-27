@@ -1,9 +1,9 @@
 // Firebase init
 const firebaseConfig = {
   apiKey: "AIzaSyBmpn8Q_cPQ-h5Bn4IVVZzehYAplVySklE",
-  authDomain: "bears-mirror-booth.firebaseapp.com",
-  projectId: "bears-mirror-booth",
-  storageBucket: "bears-mirror-booth.appspot.com",
+  authDomain: "bears-mirror-booth1.firebaseapp.com",
+  projectId: "bears-mirror-booth1",
+  storageBucket: "bears-mirror-booth1.appspot.com",
   messagingSenderId: "257786727773",
   appId: "1:257786727773:web:78f2d949a8d7beb5422cb4"
 };
