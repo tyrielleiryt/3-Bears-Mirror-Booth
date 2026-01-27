@@ -103,20 +103,22 @@ confirmBtn.addEventListener("click", async () => {
     const imageData = photoPreview.src;
     const url = await uploadPhoto(imageData);
 
-    alert("Photo saved!");
-    console.log("Saved photo URL:", url);
+console.log("Saved photo URL:", url);
+
+// Reset button FIRST
+confirmBtn.disabled = false;
+confirmBtn.textContent = "Looks Good";
+
+// Hide preview & reset camera
 preview.classList.add("hidden");
-    video.style.display = "block";
-    captureBtn.disabled = false;
+video.style.display = "block";
+captureBtn.disabled = false;
 
     // NEXT: QR & Share screen (MODULE 4)
   } catch (err) {
     alert("Upload failed. Please try again.");
     console.error(err);
   }
-
-  confirmBtn.disabled = false;
-  confirmBtn.textContent = "Looks Good";
 });
 
 async function uploadPhoto(dataUrl) {
