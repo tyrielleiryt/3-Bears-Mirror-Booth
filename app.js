@@ -5,7 +5,7 @@ const firebaseConfig = {
   projectId: "bears-mirror-booth1",
   storageBucket: "bears-mirror-booth1.appspot.com",
   messagingSenderId: "257786727773",
-  appId: "1:257786727773:web:78f2d949a8d7beb5422cb4"
+  appId: "1:775012715538:web:c04c2cd3b3db492122dccb"
 };
 
 firebase.initializeApp(firebaseConfig);
