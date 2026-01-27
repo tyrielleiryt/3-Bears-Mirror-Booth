@@ -3,7 +3,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBmpn8Q_cPQ-h5Bn4IVVZzehYAplVySklE",
   authDomain: "bears-mirror-booth.firebaseapp.com",
   projectId: "bears-mirror-booth",
-  storageBucket: "bears-mirror-booth.firebasestorage.app",
+  storageBucket: "bears-mirror-booth.appspot.com",
   messagingSenderId: "257786727773",
   appId: "1:257786727773:web:78f2d949a8d7beb5422cb4"
 };
@@ -132,32 +132,41 @@ showQR(url);
 });
 
 async function uploadPhoto(dataUrl) {
-  const blob = await (await fetch(dataUrl)).blob();
-  const timestamp = Date.now();
-  const filename = `photos/${timestamp}.jpg`;
+  try {
+    const blob = await (await fetch(dataUrl)).blob();
 
-  const storageRef = storage.ref().child(filename);
+    if (blob.size > 5 * 1024 * 1024) {
+      throw new Error("Image too large");
+    }
 
-  // 1️⃣ Upload image (THIS is what matters)
-  await storageRef.put(blob, {
-    contentType: "image/jpeg"
-  });
+    const timestamp = Date.now();
+    const filename = `photos/${timestamp}.jpg`;
+    const storageRef = storage.ref().child(filename);
 
-  const rawUrl = await storageRef.getDownloadURL();
+    await storageRef.put(blob, {
+      contentType: "image/jpeg"
+    });
 
-  const downloadURL = rawUrl.replace(
-    "firebasestorage.app",
-    "firebasestorage.googleapis.com"
-  );
+    const rawUrl = await storageRef.getDownloadURL();
 
-  // 2️⃣ Firestore write — DO NOT AWAIT
-  db.collection("photos").add({
-    url: downloadURL,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).catch(console.error);
+    const downloadURL = rawUrl.replace(
+      "firebasestorage.app",
+      "firebasestorage.googleapis.com"
+    );
 
-  // 3️⃣ Return immediately
-  return downloadURL;
+    // Firestore in background
+    db.collection("photos")
+      .add({
+        url: downloadURL,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .catch(console.error);
+
+    return downloadURL;
+  } catch (err) {
+    console.error("UPLOAD FAILED:", err);
+    throw err;
+  }
 }
 
 const qrOverlay = document.createElement("div");
