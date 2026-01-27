@@ -73,3 +73,7 @@ video {
   border-radius: 40px;
   border: none;
 }
+
+.hidden {
+  display: none !important;
+}

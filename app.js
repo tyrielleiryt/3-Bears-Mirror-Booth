@@ -42,9 +42,10 @@ startCamera();
 
 // COUNTDOWN
 function startCountdown(seconds = 3) {
-    if (captureBtn.disabled) return;
+  if (captureBtn.disabled) return;
+
   captureBtn.disabled = true;
-  countdownEl.hidden = false;
+  countdownEl.classList.remove("hidden");
 
   let count = seconds;
   countdownEl.textContent = count;
@@ -53,7 +54,7 @@ function startCountdown(seconds = 3) {
     count--;
     if (count === 0) {
       clearInterval(interval);
-      countdownEl.hidden = true;
+      countdownEl.classList.add("hidden");
       capturePhoto();
     } else {
       countdownEl.textContent = count;
@@ -81,15 +82,15 @@ function capturePhoto() {
   const imageData = canvas.toDataURL("image/jpeg", 0.85);
   photoPreview.src = imageData;
 
-  preview.hidden = false;
-  video.style.display = "none";
+preview.classList.remove("hidden");
+video.style.display = "none";
 }
 
 // EVENTS
 captureBtn.addEventListener("click", () => startCountdown());
 
 retakeBtn.addEventListener("click", () => {
-  preview.hidden = true;
+preview.classList.add("hidden");
   video.style.display = "block";
   captureBtn.disabled = false;
 });
@@ -104,7 +105,7 @@ confirmBtn.addEventListener("click", async () => {
 
     alert("Photo saved!");
     console.log("Saved photo URL:", url);
-    preview.hidden = true;
+preview.classList.add("hidden");
     video.style.display = "block";
     captureBtn.disabled = false;
 
