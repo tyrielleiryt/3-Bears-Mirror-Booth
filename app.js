@@ -133,22 +133,24 @@ async function uploadPhoto(dataUrl) {
 
   const storageRef = storage.ref().child(filename);
 
+  // 1️⃣ Upload image (THIS is what matters)
   await storageRef.put(blob, {
     contentType: "image/jpeg"
   });
 
   const rawUrl = await storageRef.getDownloadURL();
 
-// Force classic Firebase domain (fixes broken image rendering)
-const downloadURL = rawUrl.replace(
-  "firebasestorage.app",
-  "firebasestorage.googleapis.com"
-);
+  const downloadURL = rawUrl.replace(
+    "firebasestorage.app",
+    "firebasestorage.googleapis.com"
+  );
 
-  await db.collection("photos").add({
+  // 2️⃣ Firestore write — DO NOT AWAIT
+  db.collection("photos").add({
     url: downloadURL,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
+  }).catch(console.error);
 
+  // 3️⃣ Return immediately
   return downloadURL;
 }
