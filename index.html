@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Mirror Photo Booth</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <video id="camera" autoplay playsinline muted></video>
+
+  <canvas id="canvas" hidden></canvas>
+
+  <div id="overlay">
+    <div id="countdown" hidden></div>
+
+    <button id="captureBtn">Tap to Take Photo</button>
+
+    <div id="preview" hidden>
+      <img id="photoPreview" />
+      <div class="actions">
+        <button id="confirmBtn">Looks Good</button>
+        <button id="retakeBtn">Retake</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
