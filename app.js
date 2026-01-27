@@ -82,6 +82,7 @@ function capturePhoto() {
   photoPreview.src = imageData;
 
   preview.hidden = false;
+  video.style.display = "none";
 }
 
 // EVENTS
@@ -89,6 +90,7 @@ captureBtn.addEventListener("click", () => startCountdown());
 
 retakeBtn.addEventListener("click", () => {
   preview.hidden = true;
+  video.style.display = "block";
   captureBtn.disabled = false;
 });
 
@@ -103,7 +105,8 @@ confirmBtn.addEventListener("click", async () => {
     alert("Photo saved!");
     console.log("Saved photo URL:", url);
     preview.hidden = true;
-captureBtn.disabled = false;
+    video.style.display = "block";
+    captureBtn.disabled = false;
 
     // NEXT: QR & Share screen (MODULE 4)
   } catch (err) {
