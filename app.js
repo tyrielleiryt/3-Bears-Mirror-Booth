@@ -130,7 +130,13 @@ async function uploadPhoto(dataUrl) {
     contentType: "image/jpeg"
   });
 
-  const downloadURL = await storageRef.getDownloadURL();
+  const rawUrl = await storageRef.getDownloadURL();
+
+// Force classic Firebase domain (fixes broken image rendering)
+const downloadURL = rawUrl.replace(
+  "firebasestorage.app",
+  "firebasestorage.googleapis.com"
+);
 
   await db.collection("photos").add({
     url: downloadURL,
