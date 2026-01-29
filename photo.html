@@ -2,23 +2,97 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>3 Bears Cafe</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Photo – 3 Bears Cafe</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 1rem;
+      background: #000;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+    }
+
+    button, a {
+      display: block;
+      width: 100%;
+      max-width: 320px;
+      margin: 0.5rem auto;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 40px;
+      border: none;
+      text-decoration: none;
+      color: #000;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .secondary {
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+    }
+
+    .hint {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
-<body style="background:black;color:white;text-align:center;padding:1rem">
+<body>
 
-  <h2>☕ 3 Bears Cafe</h2>
+  <h2>📸 Your Photo</h2>
 
-  <img id="photo" style="max-width:100%;border-radius:20px;margin:1rem 0"/>
+  <img id="photo" />
 
-  <div class="actions">
-    <button onclick="download()">📥 Download</button>
-    <button onclick="openIG()">📸 Instagram</button>
-    <button onclick="openFB()">📘 Facebook</button>
-    <button onclick="copyCaption()">📋 Copy Caption</button>
-  </div>
+  <!-- OPTION 1: Native Share Prompt -->
+  <button id="shareBtn">Share Photo</button>
 
-  <script src="photo.js"></script>
+  <!-- OPTION 2: Download -->
+  <a id="downloadBtn" download class="secondary">Download Photo</a>
+
+  <!-- OPTION 3: Open Apps -->
+  <a href="instagram://app" class="secondary">Open Instagram</a>
+  <a href="fb://profile" class="secondary">Open Facebook</a>
+
+  <p class="hint">
+    Save your photo, then upload it to Instagram or Facebook.<br/>
+    Tag <strong>@3BearsCafe</strong> ☕
+  </p>
+
+  <script>
+    // Get image URL from QR
+    const params = new URLSearchParams(window.location.search);
+    const imgUrl = params.get("img");
+
+    const img = document.getElementById("photo");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    img.src = imgUrl;
+    downloadBtn.href = imgUrl;
+
+    // Native Share Prompt
+    document.getElementById("shareBtn").addEventListener("click", async () => {
+      if (navigator.share) {
+        await navigator.share({
+          title: "My photo at 3 Bears Cafe ☕",
+          text: "Taken at 3 Bears Cafe!",
+          url: imgUrl
+        });
+      } else {
+        alert("Please download the photo and upload it to Instagram or Facebook.");
+      }
+    });
+  </script>
+
 </body>
 </html>
