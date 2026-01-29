@@ -1,18 +1,5 @@
 let isUploading = false;
-// Firebase init
-const firebaseConfig = {
-  apiKey: "AIzaSyCQRnrziHFvR6nNxRtZhh4QZU8td5i7Zg8",
-  authDomain: "bears-mirror-booth1.firebaseapp.com",
-  projectId: "bears-mirror-booth1",
-  storageBucket: "bears-mirror-booth1.appspot.com",
-  messagingSenderId: "775012715538",
-  appId: "1:775012715538:web:c04c2cd3b3db492122dccb"
-};
 
-firebase.initializeApp(firebaseConfig);
-
-const storage = firebase.storage();
-const db = firebase.firestore();
 
 const video = document.getElementById("camera");
 const canvas = document.getElementById("canvas");
