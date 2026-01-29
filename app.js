@@ -134,36 +134,26 @@ confirmBtn.addEventListener("click", async () => {
 });
 
 async function uploadPhoto(dataUrl) {
-  try {
-    const blob = await (await fetch(dataUrl)).blob();
+  const blob = await (await fetch(dataUrl)).blob();
 
-    if (blob.size > 5 * 1024 * 1024) {
-      throw new Error("Image too large");
+  const formData = new FormData();
+  formData.append("file", blob);
+  formData.append("upload_preset", "mirror_booth");
+
+  const res = await fetch(
+    "https://api.cloudinary.com/v1_1/dmz0nvnk8/image/upload",
+    {
+      method: "POST",
+      body: formData
     }
+  );
 
-    const timestamp = Date.now();
-    const filename = `photos/${timestamp}.jpg`;
-    const storageRef = storage.ref().child(filename);
-
-    await storageRef.put(blob, {
-      contentType: "image/jpeg"
-    });
-
-const downloadURL = await storageRef.getDownloadURL();
-
-    // Firestore in background
-    db.collection("photos")
-      .add({
-        url: downloadURL,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      .catch(console.error);
-
-    return downloadURL;
-  } catch (err) {
-    console.error("UPLOAD FAILED:", err);
-    throw err;
+  if (!res.ok) {
+    throw new Error("Upload failed");
   }
+
+  const data = await res.json();
+  return data.secure_url; // ✅ public CDN image
 }
 
 const qrOverlay = document.createElement("div");
