@@ -1,3 +1,4 @@
+let isUploading = false;
 // Firebase init
 const firebaseConfig = {
   apiKey: "AIzaSyCQRnrziHFvR6nNxRtZhh4QZU8td5i7Zg8",
@@ -101,6 +102,9 @@ preview.classList.add("hidden");
 });
 
 confirmBtn.addEventListener("click", async () => {
+  if (isUploading) return;        // ⛔ block double click
+  isUploading = true;
+
   confirmBtn.disabled = true;
   confirmBtn.textContent = "Saving...";
 
@@ -108,26 +112,24 @@ confirmBtn.addEventListener("click", async () => {
     const imageData = photoPreview.src;
     const url = await uploadPhoto(imageData);
 
-console.log("Saved photo URL:", url);
+    console.log("Saved photo URL:", url);
 
-// Reset button FIRST
-confirmBtn.disabled = false;
-confirmBtn.textContent = "Looks Good";
+    // reset state
+    isUploading = false;
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = "Looks Good";
 
-// Hide preview & reset camera
-preview.classList.add("hidden");
-video.style.display = "block";
-captureBtn.disabled = false;
+    preview.classList.add("hidden");
+    video.style.display = "block";
+    captureBtn.disabled = false;
 
-    // NEXT: QR & Share screen (MODULE 4)
-    // === MODULE 4: QR SCREEN ===
-showQR(url);
-  } 
-  
-  
-  catch (err) {
-    alert("Upload failed. Please try again.");
+    showQR(url);
+  } catch (err) {
     console.error(err);
+    isUploading = false;
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = "Looks Good";
+    alert("Upload failed. Please try again.");
   }
 });
 
@@ -147,12 +149,7 @@ async function uploadPhoto(dataUrl) {
       contentType: "image/jpeg"
     });
 
-    const rawUrl = await storageRef.getDownloadURL();
-
-    const downloadURL = rawUrl.replace(
-      "firebasestorage.app",
-      "firebasestorage.googleapis.com"
-    );
+const downloadURL = await storageRef.getDownloadURL();
 
     // Firestore in background
     db.collection("photos")
