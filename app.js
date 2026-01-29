@@ -148,9 +148,11 @@ async function uploadPhoto(dataUrl) {
     }
   );
 
-  if (!res.ok) {
-    throw new Error("Upload failed");
-  }
+if (!res.ok) {
+  const errorText = await res.text();
+  console.error("Cloudinary error:", errorText);
+  throw new Error(errorText);
+}
 
   const data = await res.json();
   return data.secure_url; // ✅ public CDN image
