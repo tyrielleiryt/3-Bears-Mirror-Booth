@@ -4,6 +4,9 @@ let isUploading = false;
 const frameImage = new Image();
 frameImage.src = "frame.png";
 
+const idleScreen = document.getElementById("idleScreen");
+const startBtn = document.getElementById("startBtn");
+
 const video = document.getElementById("camera");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -20,6 +23,7 @@ let stream;
 
 // CAMERA INIT
 async function startCamera() {
+    if (stream) return;  // 👈 prevent double camera start
   stream = await navigator.mediaDevices.getUserMedia({
     video: { facingMode: "user" },
     audio: false
@@ -27,7 +31,12 @@ async function startCamera() {
   video.srcObject = stream;
 }
 
-startCamera();
+startBtn.addEventListener("click", async () => {
+  idleScreen.style.display = "none";
+  video.style.display = "block";   // 👈 show camera
+  await startCamera();
+});
+
 
 
 
@@ -200,9 +209,17 @@ preview.classList.add("hidden");
   video.style.display = "none"; // 🔑 hide camera
   qrOverlay.classList.remove("hidden");
 
-  setTimeout(() => {
-    qrOverlay.classList.add("hidden");
-    video.style.display = "block"; // 🔑 restore camera
-  }, 30000);
+setTimeout(() => {
+  qrOverlay.classList.add("hidden");
+
+  // 🔴 Stop camera stream completely
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+
+  video.style.display = "none";
+  idleScreen.style.display = "flex";
+}, 30000);
   
 }
