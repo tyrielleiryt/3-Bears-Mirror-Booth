@@ -1,5 +1,8 @@
 let isUploading = false;
 
+// PRELOAD FRAME IMAGE (LOAD ONCE)
+const frameImage = new Image();
+frameImage.src = "frame.png";
 
 const video = document.getElementById("camera");
 const canvas = document.getElementById("canvas");
@@ -52,31 +55,43 @@ function startCountdown(seconds = 3) {
 
 // CAPTURE
 function capturePhoto() {
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
+  const FRAME_WIDTH = 1080;
+  const FRAME_HEIGHT = 1350;
+
+  canvas.width = FRAME_WIDTH;
+  canvas.height = FRAME_HEIGHT;
+
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // ---- Adjust these to match your transparent window ----
+  const photoX = 90;
+  const photoY = 300;
+  const photoWidth = 900;
+  const photoHeight = 675;
 
   ctx.save();
   ctx.scale(-1, 1);
-  ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+  ctx.drawImage(
+    video,
+    -photoX - photoWidth,
+    photoY,
+    photoWidth,
+    photoHeight
+  );
   ctx.restore();
 
-  // Branding
-  ctx.fillStyle = "rgba(0,0,0,0.6)";
-  ctx.fillRect(0, canvas.height - 60, canvas.width, 60);
-  ctx.fillStyle = "white";
-  ctx.font = "30px sans-serif";
-  ctx.fillText("☕ Your Coffee Shop", 20, canvas.height - 20);
+  // Draw frame overlay (already loaded)
+  ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
 
-  const imageData = canvas.toDataURL("image/jpeg", 0.85);
+  const imageData = canvas.toDataURL("image/jpeg", 0.95);
   photoPreview.src = imageData;
 
-
-  // ✅ RESET CONFIRM BUTTON HERE (CRITICAL)
   confirmBtn.disabled = false;
   confirmBtn.textContent = "Looks Good";
 
-preview.classList.remove("hidden");
-video.style.display = "none";
+  preview.classList.remove("hidden");
+  video.style.display = "none";
 }
 
 // EVENTS
