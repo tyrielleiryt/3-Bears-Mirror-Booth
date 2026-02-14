@@ -154,3 +154,21 @@ video {
   color: #e63976;
   font-weight: bold;
 }
+
+.romantic-btn {
+  font-size: 1.6rem;
+  padding: 1rem 3rem;
+  border-radius: 60px;
+  border: 2px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.romantic-btn:hover {
+  background: rgba(255,255,255,0.35);
+  transform: scale(1.05);
+}
