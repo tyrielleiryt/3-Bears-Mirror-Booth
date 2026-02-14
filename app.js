@@ -68,18 +68,35 @@ function capturePhoto() {
   const photoX = 90;
   const photoY = 300;
   const photoWidth = 900;
-  const photoHeight = 675;
+  const photoHeight = 720;
 
-  ctx.save();
-  ctx.scale(-1, 1);
-  ctx.drawImage(
-    video,
-    -photoX - photoWidth,
-    photoY,
-    photoWidth,
-    photoHeight
-  );
-  ctx.restore();
+  // Auto crop & fill window properly
+const videoRatio = video.videoWidth / video.videoHeight;
+const frameRatio = photoWidth / photoHeight;
+
+let drawWidth, drawHeight;
+
+if (videoRatio > frameRatio) {
+  drawHeight = photoHeight;
+  drawWidth = drawHeight * videoRatio;
+} else {
+  drawWidth = photoWidth;
+  drawHeight = drawWidth / videoRatio;
+}
+
+const offsetX = photoX - (drawWidth - photoWidth) / 2;
+const offsetY = photoY - (drawHeight - photoHeight) / 2;
+
+ctx.save();
+ctx.scale(-1, 1);
+ctx.drawImage(
+  video,
+  -offsetX - drawWidth,
+  offsetY,
+  drawWidth,
+  drawHeight
+);
+ctx.restore();
 
   // Draw frame overlay (already loaded)
   ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
